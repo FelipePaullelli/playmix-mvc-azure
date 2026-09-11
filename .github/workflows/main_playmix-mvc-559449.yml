@@ -3,32 +3,32 @@ name: 'Build and deploy JAR app to Azure Web App: playmix-mvc-559449'
 on:
   push:
     branches:
-    - main
+      - main
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Set up Java version
-      uses: actions/setup-java@v1
-      with:
-        java-version: '17'
-    
-- name: Build with Maven
-  run: mvn clean install
-  env:
-    SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-    SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-    SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
 
-- name: Deploy to Azure Web App
-  uses: azure/webapps-deploy@v2
-  with: 
-    app-name: 'playmix-mvc-559449'
-    slot-name: 'production'
-    publish-profile: ${{ secrets.AzureAppService_PublishProfile_6e875fdb8e284238b7747725f025be83 }}
-    package: '${{ github.workspace }}/target/*.jar'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java version
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'playmix-mvc-559449'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_6e875fdb8e284238b87747725f025be83 }}
+          package: '${{ github.workspace }}/target/*.jar'
